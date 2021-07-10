@@ -51,6 +51,28 @@ app.post('/api/notes', ( req,res ) => {
     req.json(req.body);
 }) 
 
+// delete note
+app.delete('/api/notes/:id', ( req, res ) => {
+
+    let path = (__dirname, './db/db.json');
+
+    for (let i = 0; i < notes.length; i++) {
+        if (notes[i].id === req.params.id) {
+            notes.splice(i, 1);
+            break;
+        }
+    }
+    fs.writeFileSync(path, JSON.stringify(notes), (err) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            console.log('note deleted')
+        }
+    })
+    res.json(notes);
+})
+
 
 app.listen(PORT, () => {
     console.log(`Server is now running on port ${PORT}!`);
